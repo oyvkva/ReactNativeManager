@@ -1,4 +1,5 @@
 import { EMAIL_CHANGED, PASSWORD_CHANGED } from './types';
+import firebase from 'firebase';
 
 export const emailChanged = (text) => {
   return {
@@ -13,3 +14,15 @@ export const passwordChanged = (text) => {
     payload: text
   };
 };
+
+// This needs to be an asynchronous action creator.
+// To do this we will use redux-thunk.
+export const loginUser = ({ email, password }) => {
+  return (dispatch) => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(user => {
+        dispatch({ type: 'LOGIN_USER_SUCCESS', payload: user });
+      });
+  };
+};
+
